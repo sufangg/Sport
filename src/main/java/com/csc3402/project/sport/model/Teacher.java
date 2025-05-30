@@ -1,85 +1,108 @@
 package com.csc3402.project.sport.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Teacher_ID")
-    private int tID;
+    private int teacherId;
 
-    @Column(name = "Name")
-    private String tName;
+    @Column(name = "Teacher_Name")
+    private String name;
 
     @Column(name = "Email")
-    private String tEmail;
+    private String email;
 
     @Column(name = "Room_Number")
-    private String tAddress;
+    private String roomNumber;
 
     @Column(name = "Phone_Number")
-    private String tPhone;
+    private String phoneNumber;
 
     @Column(name = "Password")
-    private String tPassword;
+    private String password;
 
-    public Teacher(String tName, String tEmail, String tAddress, String tPhone, String tPassword) {
-        this.tName = tName;
-        this.tEmail = tEmail;
-        this.tAddress = tAddress;
-        this.tPhone = tPhone;
-        this.tPassword = tPassword;
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private List<SportSession> sessions;
+
+    public Teacher() {}
+
+    public Teacher(String name, String email, String roomNumber, String phoneNumber, String password) {
+        this.name = name;
+        this.email = email;
+        this.roomNumber = roomNumber;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
-    public Teacher() {
+    public int getTeacherId() {
+        return teacherId;
     }
 
-    public int gettID() {
-        return tID;
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 
-    public void settID(int tID) {
-        this.tID = tID;
+    public String getName() {
+        return name;
     }
 
-    public String gettName() {
-        return tName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void settName(String tName) {
-        this.tName = tName;
+    public String getEmail() {
+        return email;
     }
 
-    public String gettEmail() {
-        return tEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void settEmail(String tEmail) {
-        this.tEmail = tEmail;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public String gettAddress() {
-        return tAddress;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
-    public void settAddress(String tAddress) {
-        this.tAddress = tAddress;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String gettPhone() {
-        return tPhone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void settPhone(String tPhone) {
-        this.tPhone = tPhone;
+    public String getPassword() {
+        return password;
     }
 
-    public String gettPassword() {
-        return tPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void settPassword(String tPassword) {
-        this.tPassword = tPassword;
+    public List<SportSession> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<SportSession> sessions) {
+        this.sessions = sessions;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

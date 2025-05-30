@@ -1,49 +1,69 @@
 package com.csc3402.project.sport.model;
 
 import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Admin_ID")
-    private int tID;
+    private int adminId;
 
     @Column(name = "Name")
-    private String tName;
+    private String name;
 
     @Column(name = "Password")
-    private String tPassword;
+    private String password;
 
-    public Admin(String tName, String tPassword) {
-        this.tName = tName;
-        this.tPassword = tPassword;
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<Modification> modifications;
+
+    public Admin() {}
+
+    public Admin(String name, String password) {
+        this.name = name;
+        this.password = password;
     }
 
-    public Admin() {
+    public int getAdminId() {
+        return adminId;
     }
 
-    public int gettID() {
-        return tID;
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
-    public void settID(int tID) {
-        this.tID = tID;
+    public String getName() {
+        return name;
     }
 
-    public String gettName() {
-        return tName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void settName(String tName) {
-        this.tName = tName;
+    public String getPassword() {
+        return password;
     }
 
-    public String gettPassword() {
-        return tPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void settPassword(String tPassword) {
-        this.tPassword = tPassword;
+    public List<Modification> getModifications() {
+        return modifications;
+    }
+
+    public void setModifications(List<Modification> modifications) {
+        this.modifications = modifications;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "adminId=" + adminId +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

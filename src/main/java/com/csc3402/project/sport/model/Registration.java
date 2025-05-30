@@ -1,0 +1,77 @@
+package com.csc3402.project.sport.model;
+
+import jakarta.persistence.*;
+import java.util.Date;
+
+@Entity
+public class Registration {
+
+    @EmbeddedId
+    private RegistrationId id;
+
+    @Column(name = "Semester")
+    private String semester;
+
+    @Column(name = "Registration_Date")
+    private Date registrationDate;
+
+    @ManyToOne
+    @MapsId("studentId")
+    @JoinColumn(name = "Student_ID")
+    private Student student;
+
+    @ManyToOne
+    @MapsId("sessionId")
+    @JoinColumn(name = "Session_ID")
+    private SportSession sportSession;
+
+    public Registration() {}
+
+    public Registration(String semester, Date registrationDate, Student student, SportSession sportSession) {
+        this.id = new RegistrationId(student.getStudentId(), sportSession.getSessionId());
+        this.semester = semester;
+        this.registrationDate = registrationDate;
+        this.student = student;
+        this.sportSession = sportSession;
+    }
+
+    public RegistrationId getId() {
+        return id;
+    }
+
+    public void setId(RegistrationId id) {
+        this.id = id;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public SportSession getSportSession() {
+        return sportSession;
+    }
+
+    public void setSportSession(SportSession sportSession) {
+        this.sportSession = sportSession;
+    }
+}

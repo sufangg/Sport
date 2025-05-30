@@ -1,84 +1,108 @@
 package com.csc3402.project.sport.model;
 
 import jakarta.persistence.*;
+import java.util.List;
+
 @Entity
 public class Student {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Student_ID")
-    private int sID;
+    private int studentId;
 
-    @Column(name = "Name")
-    private String sName;
+    @Column(name = "Student_Name")
+    private String name;
 
     @Column(name = "Email")
-    private String sEmail;
+    private String email;
 
     @Column(name = "Address")
-    private String sAddress;
+    private String address;
 
     @Column(name = "Phone_Number")
-    private String sPhone;
+    private String phoneNumber;
 
     @Column(name = "Password")
-    private String sPassword;
+    private String password;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Registration> registrations;
 
-    public int getsID() {
-        return sID;
+    public Student() {}
+
+    public Student(String name, String email, String address, String phoneNumber, String password) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
-    public void setsID(int sID) {
-        this.sID = sID;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public String getsName() {
-        return sName;
-    }
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
-    public Student(String sName, String sEmail, String sAddress, String sPhone, String sPassword) {
-        this.sName = sName;
-        this.sEmail = sEmail;
-        this.sAddress = sAddress;
-        this.sPhone = sPhone;
-        this.sPassword = sPassword;
+    public String getName() {
+        return name;
     }
 
-    public Student() {
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getsEmail() {
-        return sEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setsEmail(String sEmail) {
-        this.sEmail = sEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getsAddress() {
-        return sAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setsAddress(String sAddress) {
-        this.sAddress = sAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getsPhone() {
-        return sPhone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setsPhone(String sPhone) {
-        this.sPhone = sPhone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getsPassword() {
-        return sPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setsPassword(String sPassword) {
-        this.sPassword = sPassword;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
