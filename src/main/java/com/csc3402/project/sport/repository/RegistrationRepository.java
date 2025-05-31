@@ -8,5 +8,5 @@ import java.util.*;
 @Repository
 public interface RegistrationRepository extends JpaRepository<Registration, RegistrationId>{
     List<Registration> findByStudent(Student student);
-    List<Registration> findBySportSession_SessionId(int sessionId);
+    List<Registration> findBySportSession_SessionId(String sessionId);
 }

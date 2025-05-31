@@ -6,9 +6,8 @@ import java.util.List;
 @Entity
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Student_ID")
-    private int studentId;
+    private String studentId;
 
     @Column(name = "Student_Name")
     private String name;
@@ -30,7 +29,8 @@ public class Student {
 
     public Student() {}
 
-    public Student(String name, String email, String address, String phoneNumber, String password) {
+    public Student(String studentId, String name, String email, String address, String phoneNumber, String password) {
+        this.studentId = studentId;
         this.name = name;
         this.email = email;
         this.address = address;
@@ -38,11 +38,11 @@ public class Student {
         this.password = password;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 

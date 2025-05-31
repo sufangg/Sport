@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepositor extends JpaRepository<AccountLogin, Integer>{
+public interface AccountRepository extends JpaRepository<AccountLogin, Integer>{
     AccountLogin findByUsername(String username);
 }

@@ -6,18 +6,17 @@ import java.util.List;
 @Entity
 public class SportSession {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Session_ID")
-    private int sessionId;
+    private String sessionId;
 
     @Column(name = "Venue")
     private String venue;
 
-    @Column(name = "Group")
-    private String group;
+    @Column(name = "Session_Group")
+    private String sessionGroup;
 
-    @Column(name = "Time")
-    private String time;
+    @Column(name = "Session_Time")
+    private String sessionTime;
 
     @Column(name = "Quota")
     private int quota;
@@ -33,21 +32,22 @@ public class SportSession {
 
     public SportSession() {}
 
-    public SportSession(String venue, String group, String time, int quota, Sport sport, Teacher teacher, List<Registration> registrations) {
+    public SportSession(String sessionId, String venue, String sessionGroup, String sessionTime, int quota, Sport sport, Teacher teacher, List<Registration> registrations) {
+        this.sessionId = sessionId;
         this.venue = venue;
-        this.group = group;
-        this.time = time;
+        this.sessionGroup = sessionGroup;
+        this.sessionTime = sessionTime;
         this.quota = quota;
         this.sport = sport;
         this.teacher = teacher;
         this.registrations = registrations;
     }
 
-    public int getSessionId() {
+    public String getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(int sessionId) {
+    public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -59,20 +59,20 @@ public class SportSession {
         this.venue = venue;
     }
 
-    public String getGroup() {
-        return group;
+    public String getSessionGroup() {
+        return sessionGroup;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setSessionGroup(String sessionGroup) {
+        this.sessionGroup = sessionGroup;
     }
 
-    public String getTime() {
-        return time;
+    public String getSessionTime() {
+        return sessionTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setSessionTime(String sessionTime) {
+        this.sessionTime = sessionTime;
     }
 
     public int getQuota() {
@@ -112,8 +112,8 @@ public class SportSession {
         return "SportSession{" +
                 "sessionId=" + sessionId +
                 ", venue='" + venue + '\'' +
-                ", group='" + group + '\'' +
-                ", time='" + time + '\'' +
+                ", sessionGroup='" + sessionGroup + '\'' +
+                ", sessionTime='" + sessionTime + '\'' +
                 ", quota=" + quota +
                 ", sport=" + sport +
                 ", teacher=" + teacher +

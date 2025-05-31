@@ -9,8 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student")
@@ -28,7 +27,8 @@ public class StudentController {
 
     @GetMapping("home")
     public String studentHome(Model model, Principal principal) {
-        List<Registration> registrations = registrationService.findRegistrationsByUsername(principal.getName());
+        String username = (principal != null) ? principal.getName() : "ali@example.com";
+        List<Registration> registrations = registrationService.findRegistrationsByUsername(username);
         model.addAttribute("registrations", registrations);
         return "student-home";
     }
@@ -41,8 +41,10 @@ public class StudentController {
     }
 
     @PostMapping("register")
-    public String registerSession(@RequestParam("sessionId") Integer sessionId, Principal principal, Model model) {
-        Student student = studentService.findStudentByUsername(principal.getName());
+    public String registerSession(@RequestParam("sessionId") String sessionId, Principal principal, Model model) {
+        String username = (principal != null) ? principal.getName() : "ali@example.com";
+        Student student = studentService.findStudentByUsername(username);
+
         List<Registration> existing = registrationService.findRegistrationsByStudent(student);
         if (!existing.isEmpty()) {
             model.addAttribute("error", "You have already registered for a sport this semester.");
@@ -58,29 +60,67 @@ public class StudentController {
         }
 
         RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId);
-        Registration reg = new Registration();
+        Registration reg = new Registration("May 2025", new Date(), student, session);
         reg.setId(regId);
-        reg.setStudent(student);
-        reg.setSportSession(session);
-        reg.setSemester("May 2025");
-        reg.setRegistrationDate(new Date());
         registrationService.registerStudent(reg);
 
-        return "student-home";
+        return "redirect:/student/home";
     }
 
     @GetMapping("drop/{sessionId}")
-    public String dropSession(@PathVariable("sessionId") int sessionId, Principal principal) {
-        Student student = studentService.findStudentByUsername(principal.getName());
+    public String dropSession(@PathVariable("sessionId") String sessionId, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "ali@example.com";
+        Student student = studentService.findStudentByUsername(username);
         RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId);
         registrationService.dropRegistration(regId);
-        return "student-home";
+        return "redirect:/student/home";
     }
 
     @GetMapping("session/{id}/students")
-    public String viewStudentsBySession(@PathVariable int id, Model model) {
+    public String viewStudentsBySession(@PathVariable String id, Model model) {
         List<Student> students = registrationService.findStudentsBySessionId(id);
         model.addAttribute("students", students);
         return "session-students";
     }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String query, Model model) {
+        List<SportSession> sessions = sportSessionService.searchSessions(query);
+        model.addAttribute("sessions", sessions);
+        return "student-register";
+    }
+
+    @GetMapping("/profile")
+    public String showStudentProfile(Model model, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "ali@example.com";
+        Student student = studentService.findStudentByUsername(username);
+        model.addAttribute("student", student);
+        return "student-profile";
+    }
+
+    @GetMapping("/edit/{studentId}")
+    public String showEditForm(@PathVariable("studentId") String studentId, Model model) {
+        Optional<Student> optionalStudent = studentService.findStudentById(studentId);
+        if (optionalStudent.isEmpty()) {
+            return "redirect:/student/profile";
+        }
+        model.addAttribute("student", optionalStudent.get());
+        return "student-edit";
+    }
+
+    @PostMapping("/edit/{studentId}")
+    public String updateStudent(@PathVariable("studentId") String studentId,
+                                @ModelAttribute("student") @Valid Student student,
+                                BindingResult result,
+                                Model model) {
+        if (result.hasErrors()) {
+            return "student-edit";
+        }
+
+        studentService.updateStudent(studentId, student);
+        return "redirect:/student/profile";
+    }
+
+
+
 }

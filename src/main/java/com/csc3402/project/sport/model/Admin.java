@@ -6,9 +6,8 @@ import java.util.*;
 @Entity
 public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Admin_ID")
-    private int adminId;
+    private String adminId;
 
     @Column(name = "Name")
     private String name;
@@ -21,16 +20,17 @@ public class Admin {
 
     public Admin() {}
 
-    public Admin(String name, String password) {
+    public Admin(String adminId, String name, String password) {
+        this.adminId = adminId;
         this.name = name;
         this.password = password;
     }
 
-    public int getAdminId() {
+    public String getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(int adminId) {
+    public void setAdminId(String adminId) {
         this.adminId = adminId;
     }
 

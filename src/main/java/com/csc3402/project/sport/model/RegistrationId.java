@@ -8,31 +8,31 @@ import java.util.Objects;
 public class RegistrationId implements Serializable {
 
     @Column(name = "Student_ID")
-    private Integer studentId;
+    private String studentId;
 
     @Column(name = "Session_ID")
-    private Integer sessionId;
+    private String sessionId;
 
     public RegistrationId() {}
 
-    public RegistrationId(Integer studentId, Integer sessionId) {
+    public RegistrationId(String studentId, String sessionId) {
         this.studentId = studentId;
         this.sessionId = sessionId;
     }
 
-    public Integer getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Integer studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
-    public Integer getSessionId() {
+    public String getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(Integer sessionId) {
+    public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 

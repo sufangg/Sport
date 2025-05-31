@@ -7,7 +7,7 @@ public interface RegistrationService {
     List<Registration> listAllRegistrations();
     List<Registration> findRegistrationsByStudent(Student student);
     List<Registration> findRegistrationsByUsername(String username);
-    List<Student> findStudentsBySessionId(int sessionId);
+    List<Student> findStudentsBySessionId(String sessionId);
     Registration registerStudent(Registration registration);
     void dropRegistration(RegistrationId id);
 }

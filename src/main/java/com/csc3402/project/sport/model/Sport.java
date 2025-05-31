@@ -6,9 +6,8 @@ import java.util.List;
 @Entity
 public class Sport {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Sport_ID")
-    private int sportId;
+    private String sportId;
 
     @Column(name = "Sport_Name")
     private String sportName;
@@ -21,15 +20,16 @@ public class Sport {
 
     public Sport() {}
 
-    public Sport(String sportName) {
+    public Sport(String sportId, String sportName) {
+        this.sportId = sportId;
         this.sportName = sportName;
     }
 
-    public int getSportId() {
+    public String getSportId() {
         return sportId;
     }
 
-    public void setSportId(int sportId) {
+    public void setSportId(String sportId) {
         this.sportId = sportId;
     }
 
