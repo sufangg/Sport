@@ -52,8 +52,10 @@ public class StudentController {
         return "student-register";
     }
 
-    @PostMapping("register")
-    public String registerSession(@RequestParam("sessionId") String sessionId, Principal principal, Model model) {
+    @PostMapping("/register")
+    public String registerSession(@RequestParam("sessionId") String sessionId,
+                                  Principal principal,
+                                  Model model) {
         String username = (principal != null) ? principal.getName() : "ali@example.com";
         Student student = studentService.findStudentByUsername(username);
 
@@ -66,7 +68,7 @@ public class StudentController {
 
         SportSession session = sportSessionService.findSessionById(sessionId).orElse(null);
         if (session == null || session.getRegistrations().size() >= session.getQuota()) {
-            model.addAttribute("error", "Session is full or does not exist.");
+            model.addAttribute("error", "Session is full.");
             model.addAttribute("sessions", sportSessionService.listAllSessions());
             return "student-register";
         }
@@ -81,6 +83,8 @@ public class StudentController {
 
 
 
+
+
     @GetMapping("drop/{sessionId}")
     public String dropSession(@PathVariable("sessionId") String sessionId, Principal principal) {
         String username = (principal != null) ? principal.getName() : "ali@example.com";
@@ -88,13 +92,6 @@ public class StudentController {
         RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId, student.getSemester());
         registrationService.dropRegistration(regId);
         return "redirect:/student/home";
-    }
-
-    @GetMapping("session/{id}/students")
-    public String viewStudentsBySession(@PathVariable String id, Model model) {
-        List<Student> students = registrationService.findStudentsBySessionId(id);
-        model.addAttribute("students", students);
-        return "session-students";
     }
 
     @GetMapping("/search")
@@ -163,4 +160,12 @@ public class StudentController {
         redirectAttributes.addFlashAttribute("message", "Account created successfully!");
         return "redirect:/LoginPage";
     }
+
+    @GetMapping("session/{id}/students")
+    public String viewStudentsBySession(@PathVariable String id, Model model) {
+        List<Student> students = registrationService.findStudentsBySessionId(id);
+        model.addAttribute("students", students);
+        return "student-list";
+    }
+
 }

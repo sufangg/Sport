@@ -22,7 +22,7 @@ VALUES
 
 -- Sport Sessions
 INSERT INTO sport_session (session_id, venue, session_group, session_time, quota, sport_sport_id, teacher_teacher_id)
-VALUES('SS001', 'Hall A', 'G1', '8AM - 11AM', 20, 'SP01', 'T001'),
+VALUES('SS001', 'Hall A', 'G1', '8AM - 11AM', 2, 'SP01', 'T001'),
       ('SS002', 'Court A', 'G1', '11AM - 1PM', 20, 'SP02', 'T002');
 
 -- Registrations
