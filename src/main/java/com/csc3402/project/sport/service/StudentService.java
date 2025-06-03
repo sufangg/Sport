@@ -11,5 +11,6 @@ public interface StudentService {
     Student updateStudent(String studentId, Student student);
     void deleteStudent(Student student);
     Student findStudentByUsername(String username);
+    void saveStudent(Student student);
 }
 

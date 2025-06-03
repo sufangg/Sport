@@ -56,4 +56,9 @@ public class StudentServiceImpl implements StudentService {
     public Student findStudentByUsername(String username) {
         return studentRepository.findByEmail(username);
     }
+
+    @Override
+    public void saveStudent(Student student) {
+        studentRepository.save(student);
+    }
 }

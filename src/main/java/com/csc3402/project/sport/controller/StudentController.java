@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.*;
@@ -143,10 +144,23 @@ public class StudentController {
         return "redirect:/student/home";
     }
 
+    @GetMapping("/account")
+    public String showStudentAccountForm(Model model) {
+        model.addAttribute("student", new Student());
+        return "student-account";
+    }
 
+    @PostMapping("/account")
+    public String registerStudentAccount(@ModelAttribute("student") @Valid Student student,
+                                         BindingResult result,
+                                         Model model,
+                                         RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "student-account";
+        }
 
-
-
-
-
+        studentService.saveStudent(student);
+        redirectAttributes.addFlashAttribute("message", "Account created successfully!");
+        return "redirect:/LoginPage";
+    }
 }
