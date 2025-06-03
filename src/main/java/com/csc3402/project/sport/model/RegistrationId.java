@@ -13,11 +13,15 @@ public class RegistrationId implements Serializable {
     @Column(name = "Session_ID")
     private String sessionId;
 
+    @Column(name = "Semester")
+    private String semester;
+
     public RegistrationId() {}
 
-    public RegistrationId(String studentId, String sessionId) {
+    public RegistrationId(String studentId, String sessionId, String semester) {
         this.studentId = studentId;
         this.sessionId = sessionId;
+        this.semester = semester;
     }
 
     public String getStudentId() {
@@ -36,17 +40,25 @@ public class RegistrationId implements Serializable {
         this.sessionId = sessionId;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RegistrationId)) return false;
         RegistrationId that = (RegistrationId) o;
         return Objects.equals(studentId, that.studentId) &&
-                Objects.equals(sessionId, that.sessionId);
+                Objects.equals(sessionId, that.sessionId) &&
+                Objects.equals(semester, that.semester);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, sessionId);
+        return Objects.hash(studentId, sessionId, semester);
     }
 }

@@ -39,7 +39,7 @@
 
 
 <div class="container mt-5">
-    <h2>Welcome, Student!</h2>
+    <h2>Welcome, <span th:text="${student != null ? student.name : 'Student'}">Student</span>!</h2>
     <hr>
     <h4>Your Registered Sport Session</h4>
 
@@ -75,9 +75,8 @@
                 <td th:text="${reg.semester}">Semester</td>
                 <td th:text="${#dates.format(reg.registrationDate, 'dd-MM-yyyy')}">Date</td>
                 <td>
-                    <a th:href="@{'/student/drop/' + ${reg.sportSession.sessionId}}"
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Are you sure you want to drop this session?');">
+                    <a th:href="@{'/student/drop/' + ${reg.student.studentId} + '/' + ${reg.sportSession.sessionId} + '/' + ${reg.semester}}"
+                       class="btn btn-danger btn-sm">
                         Drop
                     </a>
                 </td>

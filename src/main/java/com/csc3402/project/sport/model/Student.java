@@ -21,6 +21,9 @@ public class Student {
     @Column(name = "Phone_Number")
     private String phoneNumber;
 
+    @Column(name = "Semester")
+    private String semester;
+
     @Column(name = "Password")
     private String password;
 
@@ -29,12 +32,13 @@ public class Student {
 
     public Student() {}
 
-    public Student(String studentId, String name, String email, String address, String phoneNumber, String password) {
+    public Student(String studentId, String name, String email, String address, String phoneNumber, String semester, String password) {
         this.studentId = studentId;
         this.name = name;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.semester = semester;
         this.password = password;
     }
 
@@ -78,6 +82,10 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getSemester() { return semester; }
+
+    public void setSemester(String semester) { this.semester = semester; }
+
     public String getPassword() {
         return password;
     }
@@ -102,6 +110,7 @@ public class Student {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", semester='" + semester + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

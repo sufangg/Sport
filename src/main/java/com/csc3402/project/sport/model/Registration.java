@@ -9,7 +9,7 @@ public class Registration {
     @EmbeddedId
     private RegistrationId id;
 
-    @Column(name = "Semester")
+    @Column(name = "Semester", insertable = false, updatable = false)
     private String semester;
 
     @Column(name = "Registration_Date")
@@ -27,13 +27,14 @@ public class Registration {
 
     public Registration() {}
 
-    public Registration(String semester, Date registrationDate, Student student, SportSession sportSession) {
-        this.id = new RegistrationId(student.getStudentId(), sportSession.getSessionId());
+    public Registration(Student student, SportSession session, String semester, Date date) {
+        this.id = new RegistrationId(student.getStudentId(), session.getSessionId(), semester);
         this.semester = semester;
-        this.registrationDate = registrationDate;
+        this.registrationDate = date;
         this.student = student;
-        this.sportSession = sportSession;
+        this.sportSession = session;
     }
+
 
     public RegistrationId getId() {
         return id;

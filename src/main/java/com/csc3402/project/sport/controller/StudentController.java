@@ -28,10 +28,21 @@ public class StudentController {
     @GetMapping("home")
     public String studentHome(Model model, Principal principal) {
         String username = (principal != null) ? principal.getName() : "ali@example.com";
+
         List<Registration> registrations = registrationService.findRegistrationsByUsername(username);
         model.addAttribute("registrations", registrations);
+
+        Student student = studentService.findStudentByUsername(username);
+        if (student == null) {
+            model.addAttribute("studentName", "Student");
+        } else {
+            model.addAttribute("student", student);
+        }
+
         return "student-home";
     }
+
+
 
     @GetMapping("register")
     public String showRegisterPage(Model model) {
@@ -59,19 +70,21 @@ public class StudentController {
             return "student-register";
         }
 
-        RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId);
-        Registration reg = new Registration("May 2025", new Date(), student, session);
+        RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId, student.getSemester());
+        Registration reg = new Registration(student, session, student.getSemester(), new Date());
         reg.setId(regId);
         registrationService.registerStudent(reg);
 
         return "redirect:/student/home";
     }
 
+
+
     @GetMapping("drop/{sessionId}")
     public String dropSession(@PathVariable("sessionId") String sessionId, Principal principal) {
         String username = (principal != null) ? principal.getName() : "ali@example.com";
         Student student = studentService.findStudentByUsername(username);
-        RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId);
+        RegistrationId regId = new RegistrationId(student.getStudentId(), sessionId, student.getSemester());
         registrationService.dropRegistration(regId);
         return "redirect:/student/home";
     }
@@ -120,6 +133,19 @@ public class StudentController {
         studentService.updateStudent(studentId, student);
         return "redirect:/student/profile";
     }
+
+    @GetMapping("/drop/{studentId}/{sessionId}/{semester}")
+    public String dropRegistration(@PathVariable String studentId,
+                                   @PathVariable String sessionId,
+                                   @PathVariable String semester) {
+        RegistrationId regId = new RegistrationId(studentId, sessionId, semester);
+        registrationService.dropRegistration(regId);
+        return "redirect:/student/home";
+    }
+
+
+
+
 
 
 
