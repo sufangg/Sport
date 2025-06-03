@@ -144,7 +144,7 @@ public class StudentController {
     @GetMapping("/account")
     public String showStudentAccountForm(Model model) {
         model.addAttribute("student", new Student());
-        return "student-account";
+        return "user-account";
     }
 
     @PostMapping("/account")
@@ -153,7 +153,7 @@ public class StudentController {
                                          Model model,
                                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "student-account";
+            return "user-account";
         }
 
         studentService.saveStudent(student);
