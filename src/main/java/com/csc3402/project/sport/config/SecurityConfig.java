@@ -1,4 +1,4 @@
-package com.csc3402.project.sport.config;
+/*package com.csc3402.project.sport.config;
 
 import com.csc3402.project.sport.service.TeacherDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -52,4 +52,4 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}
+}*/
