@@ -1,4 +1,4 @@
-package com.csc3402.project.sport.service;
+/*package com.csc3402.project.sport.service;
 
 import com.csc3402.project.sport.model.Teacher;
 import com.csc3402.project.sport.repository.TeacherRepository;
@@ -27,4 +27,4 @@ public class TeacherDetailsService implements UserDetailsService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_TEACHER"))
         );
     }
-}
+}*/
