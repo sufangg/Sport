@@ -1,4 +1,4 @@
-package com.csc3402.project.sport.controller;
+/*package com.csc3402.project.sport.controller;
 
 import com.csc3402.project.sport.model.Teacher;
 import com.csc3402.project.sport.service.TeacherService;
@@ -67,4 +67,4 @@ public class TeacherController {
         teacherService.saveTeacher(teacher);
         return "redirect:/admin/home"; // You can change redirect if needed
     }
-}
+}*/
