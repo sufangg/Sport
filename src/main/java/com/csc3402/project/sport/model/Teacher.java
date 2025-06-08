@@ -4,15 +4,17 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "Teacher")
 public class Teacher {
+
     @Id
-    @Column(name = "Teacher_ID")
+    @Column(name = "Teacher_ID", nullable = false)
     private String teacherId;
 
-    @Column(name = "Teacher_Name")
+    @Column(name = "Teacher_Name", nullable = false)
     private String name;
 
-    @Column(name = "Email")
+    @Column(name = "Email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "Room_Number")
@@ -21,13 +23,15 @@ public class Teacher {
     @Column(name = "Phone_Number")
     private String phoneNumber;
 
-    @Column(name = "Password")
+    @Column(name = "Password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SportSession> sessions;
 
-    public Teacher() {}
+    // Constructors
+    public Teacher() {
+    }
 
     public Teacher(String teacherId, String name, String email, String roomNumber, String phoneNumber, String password) {
         this.teacherId = teacherId;
@@ -38,6 +42,7 @@ public class Teacher {
         this.password = password;
     }
 
+    // Getters and Setters
     public String getTeacherId() {
         return teacherId;
     }
@@ -94,10 +99,11 @@ public class Teacher {
         this.sessions = sessions;
     }
 
+    // toString
     @Override
     public String toString() {
         return "Teacher{" +
-                "teacherId=" + teacherId +
+                "teacherId='" + teacherId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", roomNumber='" + roomNumber + '\'' +

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Teacher Home</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${teacher.name}">Teacher Name</span>!</h1>
+<p>Email: <span th:text="${teacher.email}"></span></p>
+<p>Room Number: <span th:text="${teacher.roomNumber}"></span></p>
+<p>Phone: <span th:text="${teacher.phoneNumber}"></span></p>
+
+<a th:href="@{/teacher/profile}">View Profile</a> |
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>

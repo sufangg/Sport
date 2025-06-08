@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Teacher Profile</title>
+</head>
+<body>
+<h2>Edit Profile</h2>
+<form th:action="@{/teacher/edit}" th:object="${teacher}" method="post">
+  <input type="hidden" th:field="*{teacherId}" />
+
+  <label>Name:</label>
+  <input type="text" th:field="*{name}" required /><br/>
+
+  <label>Email:</label>
+  <input type="email" th:field="*{email}" required /><br/>
+
+  <label>Room Number:</label>
+  <input type="text" th:field="*{roomNumber}" /><br/>
+
+  <label>Phone Number:</label>
+  <input type="text" th:field="*{phoneNumber}" /><br/>
+
+  <label>Password:</label>
+  <input type="password" th:field="*{password}" /><br/>
+
+  <button type="submit">Update</button>
+</form>
+<a th:href="@{/teacher/profile}">Cancel</a>
+</body>
+</html>

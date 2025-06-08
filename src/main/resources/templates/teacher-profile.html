@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Teacher Profile</title>
+</head>
+<body>
+<h2>Teacher Profile</h2>
+<p><strong>ID:</strong> <span th:text="${teacher.teacherId}"></span></p>
+<p><strong>Name:</strong> <span th:text="${teacher.name}"></span></p>
+<p><strong>Email:</strong> <span th:text="${teacher.email}"></span></p>
+<p><strong>Room Number:</strong> <span th:text="${teacher.roomNumber}"></span></p>
+<p><strong>Phone Number:</strong> <span th:text="${teacher.phoneNumber}"></span></p>
+
+<a th:href="@{/teacher/edit}">Edit Profile</a> |
+<a th:href="@{/teacher/home}">Back to Home</a>
+</body>
+</html>
