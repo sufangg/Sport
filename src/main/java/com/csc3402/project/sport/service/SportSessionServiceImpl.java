@@ -37,6 +37,10 @@ public class SportSessionServiceImpl implements SportSessionService {
     }
 
     @Override
+    public List<SportSession> findSessionsByTeacherId(String teacherId) {
+        return sportSessionRepository.findByTeacher_TeacherId(teacherId);
+    }
+    @Override
     public List<SportSession> searchSessions(String query) {
         return sportSessionRepository.searchBySportOrSessionId(query);
     }

@@ -37,11 +37,11 @@
     <hr>
     <h4>Your Assigned Sport Sessions</h4>
 
-    <div th:if="${#lists.isEmpty(teacher.sessions)}">
+    <div th:if="${#lists.isEmpty(sessions)}">
         <p class="text-muted">You are not assigned to any sport sessions currently.</p>
     </div>
 
-    <div th:unless="${#lists.isEmpty(teacher.sessions)}">
+    <div th:unless="${#lists.isEmpty(sessions)}">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
@@ -54,7 +54,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="session : ${teacher.sessions}">
+            <tr th:each="session : ${sessions}">
                 <td th:text="${session.sessionId}">SID</td>
                 <td th:text="${session.sport.sportName}">Sport</td>
                 <td th:text="${session.sessionTime}">Time</td>

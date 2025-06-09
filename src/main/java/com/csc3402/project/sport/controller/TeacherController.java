@@ -2,6 +2,7 @@ package com.csc3402.project.sport.controller;
 
 import com.csc3402.project.sport.model.Teacher;
 import com.csc3402.project.sport.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,57 +15,69 @@ public class TeacherController {
 
     private final TeacherService teacherService;
 
+    @Autowired
     public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
 
-    // 🔹 Teacher homepage
+    // Show teacher dashboard/home
     @GetMapping("/home")
-    public String teacherHome(Principal principal, Model model) {
-        String email = principal.getName(); // Logged-in teacher
-        Teacher teacher = teacherService.findTeacherByUsername(email);
+    public String teacherHome(Model model, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "lim@school.edu";
+
+        Teacher teacher = teacherService.findTeacherByUsername(username);
+        if (teacher == null) {
+            throw new RuntimeException("No teacher found with email: " + username);
+        }
+
         model.addAttribute("teacher", teacher);
-        return "teacher-home"; // HTML page under templates/teacher/
+        return "teacher-home";
     }
 
-    // 🔹 View profile
+    // Show teacher profile
     @GetMapping("/profile")
-    public String viewProfile(Principal principal, Model model) {
-        String email = principal.getName();
-        Teacher teacher = teacherService.findTeacherByUsername(email);
+    public String showProfile(Model model, Principal principal) {
+        String username = (principal != null) ? principal.getName() : "lim@school.edu";
+        Teacher teacher = teacherService.findTeacherByUsername(username);
+        if (teacher == null) {
+            throw new RuntimeException("No teacher found with email: " + username);
+        }
+
         model.addAttribute("teacher", teacher);
         return "teacher-profile";
     }
 
-    // 🔹 Edit profile form
-    @GetMapping("/edit")
-    public String showEditForm(Principal principal, Model model) {
-        String email = principal.getName();
-        Teacher teacher = teacherService.findTeacherByUsername(email);
+    // Show edit form
+    @GetMapping("/edit/{teacherId}")
+    public String showEditForm(@PathVariable("teacherId") String teacherId, Model model) {
+        Teacher teacher = teacherService.findTeacherById(teacherId).orElse(null);
+        if (teacher == null) {
+            return "redirect:/teacher/profile";
+        }
         model.addAttribute("teacher", teacher);
         return "teacher-edit";
     }
 
-    // 🔹 Submit edit form
-    @PostMapping("/edit")
-    public String updateProfile(@ModelAttribute("teacher") Teacher updatedTeacher, Principal principal) {
-        String email = principal.getName();
-        Teacher existing = teacherService.findTeacherByUsername(email);
-        teacherService.updateTeacher(existing.getTeacherId(), updatedTeacher);
+    // Handle edit form submission
+    @PostMapping("/edit/{teacherId}")
+    public String updateTeacher(@PathVariable("teacherId") String teacherId,
+                                @ModelAttribute("teacher") Teacher updatedTeacher) {
+        teacherService.updateTeacher(teacherId, updatedTeacher);
         return "redirect:/teacher/profile";
     }
 
-    // 🔹 Registration form (Admin adds teacher)
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    // Show register account form
+    @GetMapping("/account")
+    public String showAccountForm(Model model) {
         model.addAttribute("teacher", new Teacher());
-        return "teacher-register";
+        return "teacher-account";
     }
 
-    // 🔹 Submit new teacher registration
-    @PostMapping("/register")
-    public String registerTeacher(@ModelAttribute("teacher") Teacher teacher) {
+    // Handle register form
+    @PostMapping("/account")
+    public String registerTeacher(@ModelAttribute("teacher") Teacher teacher, Model model) {
         teacherService.saveTeacher(teacher);
-        return "redirect:/admin/home"; // You can change redirect if needed
+        model.addAttribute("message", "Account created successfully!");
+        return "redirect:/LoginPage";
     }
 }

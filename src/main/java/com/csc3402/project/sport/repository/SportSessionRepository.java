@@ -18,6 +18,7 @@ public interface SportSessionRepository extends JpaRepository<SportSession, Stri
        OR s.sport.sportId LIKE %:keyword%
     """)
     List<SportSession> searchBySportOrSessionId(@Param("keyword") String keyword);
+    List<SportSession> findByTeacher_TeacherId(String teacherId);
 
 }
 

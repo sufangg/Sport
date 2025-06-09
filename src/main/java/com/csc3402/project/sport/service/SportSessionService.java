@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface SportSessionService {
     List<SportSession> listAllSessions();
     Optional<SportSession> findSessionById(String id);
+    List<SportSession> findSessionsByTeacherId(String teacherId);
     SportSession addOrUpdateSession(SportSession session);
     void deleteSession(SportSession session);
     List<SportSession> searchSessions(String query);

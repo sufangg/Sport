@@ -1,17 +1,139 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Teacher Profile</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f4f6fa;
+    }
+
+    .profile-card {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .profile-header img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+
+    .profile-info h4 {
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .custom-table th,
+    .custom-table td {
+      padding: 12px 15px;
+      border: 1px solid #e3e6f0;
+    }
+
+    .custom-table th {
+      background-color: #e9f0fb;
+      color: #000000;
+      width: 40%;
+    }
+
+    .custom-table td {
+      color: #000000;
+      background-color: #f9fcff;
+    }
+
+    .btn-edit {
+      margin-top: 30px;
+      font-weight: 600;
+      display: block;
+      width: 100%;
+    }
+
+    nav a.nav-link {
+      font-weight: 600;
+    }
+
+    nav .active .nav-link {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<h2>Teacher Profile</h2>
-<p><strong>ID:</strong> <span th:text="${teacher.teacherId}"></span></p>
-<p><strong>Name:</strong> <span th:text="${teacher.name}"></span></p>
-<p><strong>Email:</strong> <span th:text="${teacher.email}"></span></p>
-<p><strong>Room Number:</strong> <span th:text="${teacher.roomNumber}"></span></p>
-<p><strong>Phone Number:</strong> <span th:text="${teacher.phoneNumber}"></span></p>
 
-<a th:href="@{/teacher/edit}">Edit Profile</a> |
-<a th:href="@{/teacher/home}">Back to Home</a>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">TEACHER PROFILE</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/teacher/home}">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/teacher/profile}">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/LoginPage.html}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Profile Card -->
+<div class="profile-card">
+  <div class="profile-header">
+    <img th:src="@{/user.png}" alt="Profile Picture">
+    <div class="profile-info">
+      <h4 th:text="${teacher.name}">Teacher Name</h4>
+    </div>
+  </div>
+
+  <table class="custom-table">
+    <tr>
+      <th>Teacher ID</th>
+      <td th:text="${teacher.teacherId}">T001</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td th:text="${teacher.email}">teacher@school.edu</td>
+    </tr>
+    <tr>
+      <th>Room Number</th>
+      <td th:text="${teacher.roomNumber}">B-204</td>
+    </tr>
+    <tr>
+      <th>Phone Number</th>
+      <td th:text="${teacher.phoneNumber}">0199990001</td>
+    </tr>
+    <tr>
+      <th>Password</th>
+      <td th:text="${teacher.password}">****</td>
+    </tr>
+  </table>
+
+  <a th:href="@{'/teacher/edit/' + ${teacher.teacherId}}" class="btn btn-success btn-edit">
+    Edit Teacher Data
+  </a>
+</div>
+
 </body>
 </html>

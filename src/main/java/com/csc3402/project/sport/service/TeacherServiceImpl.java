@@ -33,13 +33,14 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher updateTeacher(String teacherId, Teacher teacher) {
-        Teacher existing = teacherRepository.findById(teacherId).orElseThrow();
+        Teacher existing = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + teacherId));
 
         existing.setName(teacher.getName());
         existing.setEmail(teacher.getEmail());
         existing.setPhoneNumber(teacher.getPhoneNumber());
 
-        if (!teacher.getPassword().isBlank()) {
+        if (teacher.getPassword() != null && !teacher.getPassword().isBlank()) {
             existing.setPassword(teacher.getPassword());
         }
 
@@ -53,7 +54,11 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher findTeacherByUsername(String username) {
-        return teacherRepository.findByEmail(username);
+        Teacher teacher = teacherRepository.findByEmail(username);
+        if (teacher == null) {
+            throw new RuntimeException("No teacher found with email: " + username);
+        }
+        return teacher;
     }
 
     @Override
