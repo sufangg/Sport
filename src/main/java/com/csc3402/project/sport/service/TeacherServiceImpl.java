@@ -26,6 +26,7 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherRepository.findAll();
     }
 
+
     @Override
     public Teacher addNewTeacher(Teacher teacher) {
         return teacherRepository.save(teacher);
