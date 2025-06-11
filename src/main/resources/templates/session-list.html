@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <title>Manage Sport Sessions</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+  <style>
+    nav .active .nav-link {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">MANAGE SPORT SESSIONS</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/home}">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/sessions}">View Sessions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/add-session}">Add Session</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/LoginPage.html}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Content -->
+<div class="container my-5">
+  <h3 class="mb-4">List of Sport Sessions</h3>
+
+  <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+    <tr>
+      <th>Sport Code</th>
+      <th>Session Code</th>
+      <th>Sport</th>
+      <th>Group</th>
+      <th>Venue</th>
+      <th>Time</th>
+      <th>Teacher</th>
+      <th>Quota</th>
+      <th>Registered</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sess : ${sessions}">
+      <td th:text="${sess.sport != null ? sess.sport.sportId : 'N/A'}">Sport Code</td>
+      <td th:text="${sess.sessionId}">Session Code</td>
+      <td th:text="${sess.sport != null ? sess.sport.sportName : 'N/A'}">Sport Name</td>
+      <td th:text="${sess.sessionGroup}">Group</td>
+      <td th:text="${sess.venue}">Venue</td>
+      <td th:text="${sess.sessionTime}">Time</td>
+      <td th:text="${sess.teacher != null ? sess.teacher.name : 'N/A'}">Teacher</td>
+      <td th:text="${sess.quota}">Quota</td>
+      <td>
+        <a th:href="@{'/admin/session/' + ${sess.sessionId} + '/students'}"
+           class="text-primary font-weight-bold">
+          <span th:text="${sess.registrations != null ? sess.registrations.size() : 0}">0</span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

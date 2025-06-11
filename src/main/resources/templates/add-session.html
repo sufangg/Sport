@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Session</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f4f6fa;
+    }
+
+    .form-container {
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    nav .active .nav-link {
+      text-decoration: underline;
+    }
+
+    nav a.nav-link {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">MANAGE SPORT SESSIONS</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/home}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/sessions}">View Sessions</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link font-weight-bold" th:href="@{/admin/add-session}">Add Session</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" th:href="@{/LoginPage.html}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Add Session Form -->
+<div class="form-container">
+  <h3 class="mb-4 text-center">Add New Sport Session</h3>
+
+  <form th:action="@{/admin/add-session}" method="post">
+    <div class="form-group">
+      <label for="sportId">Sport Code</label>
+      <input type="text" class="form-control" id="sportId" name="sportId" required>
+    </div>
+    <div class="form-group">
+      <label for="sessionId">Session Code</label>
+      <input type="text" class="form-control" id="sessionId" name="sessionId" required>
+    </div>
+    <div class="form-group">
+      <label for="sportName">Sport Name</label>
+      <input type="text" class="form-control" id="sportName" name="sportName" required>
+    </div>
+    <div class="form-group">
+      <label for="sessionGroup">Group</label>
+      <input type="text" class="form-control" id="sessionGroup" name="sessionGroup" required>
+    </div>
+    <div class="form-group">
+      <label for="venue">Venue</label>
+      <input type="text" class="form-control" id="venue" name="venue" required>
+    </div>
+    <div class="form-group">
+      <label for="sessionTime">Time</label>
+      <input type="text" class="form-control" id="sessionTime" name="sessionTime" required>
+    </div>
+    <div class="form-group">
+      <label for="quota">Quota</label>
+      <input type="number" class="form-control" id="quota" name="quota" required>
+    </div>
+    <div class="form-group">
+      <label for="teacherName">Teacher Name</label>
+      <input type="text" class="form-control" id="teacherName" name="teacherName" required>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">Add Session</button>
+  </form>
+</div>
+
+</body>
+</html>
