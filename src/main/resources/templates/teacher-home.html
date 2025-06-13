@@ -60,7 +60,11 @@
                 <td th:text="${sportSession.sessionTime}">Time</td>
                 <td th:text="${sportSession.venue}">Venue</td>
                 <td th:text="${sportSession.sessionGroup}">Group</td>
-                <td th:text="${sportSession.quota}">Quota</td>
+                <td>
+                    <a th:href="@{'/student/session/' + ${sportSession.sessionId} + '/students'}"
+                       th:text="${sportSession.quota}"
+                       class="btn btn-link p-0">View</a>
+                </td>
             </tr>
             </tbody>
         </table>
