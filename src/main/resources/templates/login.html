@@ -72,6 +72,10 @@
     <input type="password" id="password" name="password" required/>
 
     <button type="submit">Login</button>
+    <p class="mt-3 text-center">
+      Don't have an account?
+      <a th:href="@{/user-registration}">Create one</a>
+    </p>
   </form>
 
   <div class="error-message" th:if="${param.error}">
