@@ -1,10 +1,8 @@
 // AdminController.java
 package com.csc3402.project.sport.controller;
 
-import com.csc3402.project.sport.model.Admin;
-import com.csc3402.project.sport.model.Sport;
-import com.csc3402.project.sport.model.Teacher;
-import com.csc3402.project.sport.model.SportSession;
+import com.csc3402.project.sport.model.*;
+import com.csc3402.project.sport.repository.RegistrationRepository;
 import com.csc3402.project.sport.repository.SportRepository;
 import com.csc3402.project.sport.repository.TeacherRepository;
 import com.csc3402.project.sport.repository.SportSessionRepository;
@@ -14,10 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     @Autowired
     private SportSessionRepository sessionRepo;
@@ -44,6 +46,22 @@ public class AdminController {
         model.addAttribute("sessions", sessionRepo.findAll());
         return "session-list";
     }
+
+    //@GetMapping("/admin/view-registered/{sessionId}")
+    @GetMapping("/sessions/{sessionId}/students")
+    public String viewRegisteredStudents(@PathVariable String sessionId, Model model) {
+        List<Registration> registrations = registrationRepository.findBySportSession_SessionId(sessionId);
+
+        List<Student> studentList = registrations.stream()
+                .map(Registration::getStudent)
+                .toList(); // Or use .collect(Collectors.toList()); if you're using Java 8-16
+
+        model.addAttribute("students", studentList);
+        model.addAttribute("sessionId", sessionId);
+        return "registered-students";
+    }
+
+
 
     @GetMapping("/add-session")
     public String showAddSessionForm(Model model) {
