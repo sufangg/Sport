@@ -52,5 +52,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void dropRegistration(RegistrationId id) {
         registrationRepository.deleteById(id);
     }
-
+    @Override
+    public List<Registration> findRegistrationsBySessionId(String sessionId) {
+        return registrationRepository.findBySportSession_SessionId(sessionId);
+    }
 }

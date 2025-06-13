@@ -1,7 +1,9 @@
 package com.csc3402.project.sport.controller;
 
+import com.csc3402.project.sport.model.Registration;
 import com.csc3402.project.sport.model.SportSession;
 import com.csc3402.project.sport.model.Teacher;
+import com.csc3402.project.sport.service.RegistrationService;
 import com.csc3402.project.sport.service.SportSessionService;
 import com.csc3402.project.sport.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,16 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final SportSessionService sportSessionService;
+    private final RegistrationService registrationService;
 
     @Autowired
-    public TeacherController(TeacherService teacherService, SportSessionService sportSessionService) {
+    public TeacherController(
+            TeacherService teacherService,
+            SportSessionService sportSessionService,
+            RegistrationService registrationService) {
         this.teacherService = teacherService;
         this.sportSessionService = sportSessionService;
+        this.registrationService = registrationService;
     }
 
     // Show teacher dashboard/home
@@ -41,6 +48,15 @@ public class TeacherController {
         model.addAttribute("sportSessions", sportSessions);
 
         return "teacher-home";
+    }
+
+    // Show students registered in a specific session
+    @GetMapping("/sessions/{sessionId}/students")
+    public String viewStudentsInSession(@PathVariable("sessionId") String sessionId, Model model) {
+        List<Registration> registrations = registrationService.findRegistrationsBySessionId(sessionId);
+        model.addAttribute("registrations", registrations);
+        model.addAttribute("sessionId", sessionId);
+        return "teacher-view-student";
     }
 
     // Show teacher profile

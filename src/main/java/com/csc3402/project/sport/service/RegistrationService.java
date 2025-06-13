@@ -10,4 +10,5 @@ public interface RegistrationService {
     List<Student> findStudentsBySessionId(String sessionId);
     Registration registerStudent(Registration registration);
     void dropRegistration(RegistrationId id);
+    List<Registration> findRegistrationsBySessionId(String sessionId);
 }
