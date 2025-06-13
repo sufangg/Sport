@@ -1,6 +1,8 @@
 package com.csc3402.project.sport.controller;
 
+import com.csc3402.project.sport.model.SportSession;
 import com.csc3402.project.sport.model.Teacher;
+import com.csc3402.project.sport.service.SportSessionService;
 import com.csc3402.project.sport.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,16 +10,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
 public class TeacherController {
 
     private final TeacherService teacherService;
+    private final SportSessionService sportSessionService;
 
     @Autowired
-    public TeacherController(TeacherService teacherService) {
+    public TeacherController(TeacherService teacherService, SportSessionService sportSessionService) {
         this.teacherService = teacherService;
+        this.sportSessionService = sportSessionService;
     }
 
     // Show teacher dashboard/home
@@ -27,10 +32,14 @@ public class TeacherController {
 
         Teacher teacher = teacherService.findTeacherByUsername(username);
         if (teacher == null) {
-            throw new RuntimeException("No teacher found with email: " + username);
+            model.addAttribute("teacherName", "Teacher");
+        } else {
+            model.addAttribute("teacher", teacher);
         }
 
-        model.addAttribute("teacher", teacher);
+        List<SportSession> sportSessions = sportSessionService.findByTeacher(teacher);
+        model.addAttribute("sportSessions", sportSessions);
+
         return "teacher-home";
     }
 

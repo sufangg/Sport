@@ -19,6 +19,7 @@ public interface SportSessionRepository extends JpaRepository<SportSession, Stri
     """)
     List<SportSession> searchBySportOrSessionId(@Param("keyword") String keyword);
     List<SportSession> findByTeacher_TeacherId(String teacherId);
-
+    List<SportSession> findByTeacherEmail(String email);
+    List<SportSession> findByTeacher(Teacher teacher);
 }
 

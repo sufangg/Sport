@@ -53,9 +53,4 @@ public class RegistrationServiceImpl implements RegistrationService {
         registrationRepository.deleteById(id);
     }
 
-
-
-
-
-
 }

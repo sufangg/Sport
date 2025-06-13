@@ -37,30 +37,30 @@
     <hr>
     <h4>Your Assigned Sport Sessions</h4>
 
-    <div th:if="${#lists.isEmpty(sessions)}">
-        <p class="text-muted">You are not assigned to any sport sessions currently.</p>
+    <div th:if="${#lists.isEmpty(sportSessions)}">
+        <p class="text-muted">You are not assigned to any sport session.</p>
     </div>
 
-    <div th:unless="${#lists.isEmpty(sessions)}">
+    <div th:unless="${#lists.isEmpty(sportSessions)}">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Session ID</th>
+                <th>Session Code</th>
                 <th>Sport</th>
                 <th>Time</th>
                 <th>Venue</th>
                 <th>Group</th>
-                <th>Semester</th>
+                <th>Quota</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="session : ${sessions}">
-                <td th:text="${session.sessionId}">SID</td>
-                <td th:text="${session.sport.sportName}">Sport</td>
-                <td th:text="${session.sessionTime}">Time</td>
-                <td th:text="${session.venue}">Venue</td>
-                <td th:text="${session.sessionGroup}">Group</td>
-                <td th:text="${session.semester}">Semester</td>
+            <tr th:each="sportSession : ${sportSessions}">
+                <td th:text="${sportSession.sessionId}">Session Code</td>
+                <td th:text="${sportSession.sport.sportName}">Sport</td>
+                <td th:text="${sportSession.sessionTime}">Time</td>
+                <td th:text="${sportSession.venue}">Venue</td>
+                <td th:text="${sportSession.sessionGroup}">Group</td>
+                <td th:text="${sportSession.quota}">Quota</td>
             </tr>
             </tbody>
         </table>

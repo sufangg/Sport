@@ -103,10 +103,6 @@ public class SportSession {
         return registrations;
     }
 
-    public void setRegistrations(List<Registration> registrations) {
-        this.registrations = registrations;
-    }
-
     @Override
     public String toString() {
         return "SportSession{" +

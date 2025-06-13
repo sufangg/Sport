@@ -1,6 +1,8 @@
 package com.csc3402.project.sport.service;
 
 import com.csc3402.project.sport.model.SportSession;
+import com.csc3402.project.sport.model.Teacher;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +13,5 @@ public interface SportSessionService {
     SportSession addOrUpdateSession(SportSession session);
     void deleteSession(SportSession session);
     List<SportSession> searchSessions(String query);
+    List<SportSession> findByTeacher(Teacher teacher);
 }

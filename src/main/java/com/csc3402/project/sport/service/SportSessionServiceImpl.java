@@ -1,6 +1,7 @@
 package com.csc3402.project.sport.service;
 
 import com.csc3402.project.sport.model.SportSession;
+import com.csc3402.project.sport.model.Teacher;
 import com.csc3402.project.sport.repository.SportSessionRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,11 @@ public class SportSessionServiceImpl implements SportSessionService {
 
     public SportSessionServiceImpl(SportSessionRepository sportSessionRepository) {
         this.sportSessionRepository = sportSessionRepository;
+    }
+
+    @Override
+    public List<SportSession> findSessionsByTeacherId(String teacherId) {
+        return sportSessionRepository.findByTeacher_TeacherId(teacherId);
     }
 
     @Override
@@ -37,8 +43,8 @@ public class SportSessionServiceImpl implements SportSessionService {
     }
 
     @Override
-    public List<SportSession> findSessionsByTeacherId(String teacherId) {
-        return sportSessionRepository.findByTeacher_TeacherId(teacherId);
+    public List<SportSession> findByTeacher(Teacher teacher) {
+        return sportSessionRepository.findByTeacher(teacher);
     }
     @Override
     public List<SportSession> searchSessions(String query) {
