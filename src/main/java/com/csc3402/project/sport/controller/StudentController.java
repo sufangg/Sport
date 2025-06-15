@@ -44,7 +44,6 @@ public class StudentController {
     }
 
 
-
     @GetMapping("register")
     public String showRegisterPage(Model model) {
         List<SportSession> sessions = sportSessionService.listAllSessions();
@@ -95,7 +94,9 @@ public class StudentController {
     public String search(@RequestParam("query") String query, Model model) {
         List<SportSession> sessions = sportSessionService.searchSessions(query);
         if (sessions.isEmpty()) {
-            model.addAttribute("error", "No sport sessions found");
+            model.addAttribute("error", "No sport sessions found. Showing all sessions shortly...");
+            model.addAttribute("showAll", true); // signal for JS to fetch all later
+            return "student-register";
         }
         model.addAttribute("sessions", sessions);
         return "student-register";
