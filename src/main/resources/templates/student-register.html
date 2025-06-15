@@ -95,7 +95,6 @@
     </div>
 
     <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-    <div th:if="${error}" class="alert alert-warning text-center" id="errorMsg" th:text="${error}"></div>
 
     <!-- Search bar -->
     <form class="form-inline mb-4" th:action="@{/student/search}" method="get">
