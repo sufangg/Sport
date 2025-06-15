@@ -12,10 +12,10 @@ import java.util.List;
 public interface SportSessionRepository extends JpaRepository<SportSession, String> {
 
     @Query("""
-    SELECT s FROM SportSession s
-    WHERE s.sport.sportName LIKE %:keyword%
-       OR s.sessionId LIKE %:keyword%
-       OR s.sport.sportId LIKE %:keyword%
+        SELECT s FROM SportSession s
+        WHERE LOWER(s.sport.sportName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+           OR LOWER(s.sessionId) LIKE LOWER(CONCAT('%', :keyword, '%'))
+           OR LOWER(s.sport.sportId) LIKE LOWER(CONCAT('%', :keyword, '%'))
     """)
     List<SportSession> searchBySportOrSessionId(@Param("keyword") String keyword);
     List<SportSession> findByTeacher_TeacherId(String teacherId);

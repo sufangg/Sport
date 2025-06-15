@@ -82,9 +82,6 @@ public class StudentController {
     }
 
 
-
-
-
     @GetMapping("drop/{sessionId}")
     public String dropSession(@PathVariable("sessionId") String sessionId, Principal principal) {
         String username = (principal != null) ? principal.getName() : "ali@example.com";
@@ -97,9 +94,13 @@ public class StudentController {
     @GetMapping("/search")
     public String search(@RequestParam("query") String query, Model model) {
         List<SportSession> sessions = sportSessionService.searchSessions(query);
+        if (sessions.isEmpty()) {
+            model.addAttribute("error", "No sport sessions found");
+        }
         model.addAttribute("sessions", sessions);
         return "student-register";
     }
+
 
     @GetMapping("/profile")
     public String showStudentProfile(Model model, Principal principal) {
@@ -141,25 +142,6 @@ public class StudentController {
         return "redirect:/student/home";
     }
 
-    @GetMapping("/account")
-    public String showStudentAccountForm(Model model) {
-        model.addAttribute("student", new Student());
-        return "user-account";
-    }
-
-    @PostMapping("/account")
-    public String registerStudentAccount(@ModelAttribute("student") @Valid Student student,
-                                         BindingResult result,
-                                         Model model,
-                                         RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            return "user-account";
-        }
-
-        studentService.saveStudent(student);
-        redirectAttributes.addFlashAttribute("message", "Account created successfully!");
-        return "redirect:/LoginPage";
-    }
 
     @GetMapping("session/{id}/students")
     public String viewStudentsBySession(@PathVariable String id, Model model) {

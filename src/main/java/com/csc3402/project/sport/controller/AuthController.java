@@ -8,6 +8,9 @@ import com.csc3402.project.sport.repository.TeacherRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -21,7 +24,11 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(@RequestParam(value = "success", required = false) String success,
+                            Model model) {
+        if (success != null) {
+            model.addAttribute("success", "Account created successfully.");
+        }
         return "login";
     }
 
@@ -32,7 +39,16 @@ public class AuthController {
     }
 
     @PostMapping("/user-registration")
-    public String registerUser(@ModelAttribute("user") UserRegistrationDto dto, Model model) {
+    public String registerUser(@ModelAttribute("user") UserRegistrationDto dto,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
+
+        // Check for duplicate email
+        if (emailExists(dto.getEmail())) {
+            model.addAttribute("error", "Email already exists.");
+            return "user-registration";
+        }
+
         if ("STUDENT".equalsIgnoreCase(dto.getRole())) {
             Student student = new Student();
             student.setStudentId(generateStudentId());
@@ -54,17 +70,23 @@ public class AuthController {
             teacherRepo.save(teacher);
         }
 
-        model.addAttribute("success", "Account created successfully. Please login.");
+        redirectAttributes.addAttribute("success", "true");
         return "redirect:/login";
+    }
+
+    private boolean emailExists(String email) {
+        return studentRepo.findByEmail(email) != null ||
+                teacherRepo.findByEmail(email) != null;
     }
 
     private String generateStudentId() {
         long count = studentRepo.count() + 1;
-        return String.format("S%03d", count); // e.g., S001
+        return String.format("S%03d", count);
     }
 
     private String generateTeacherId() {
         long count = teacherRepo.count() + 1;
-        return String.format("T%03d", count); // e.g., T001
+        return String.format("T%03d", count);
     }
+
 }
