@@ -89,4 +89,9 @@ public class AuthController {
         return String.format("T%03d", count);
     }
 
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied"; // This will resolve to access-denied.html in templates
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.csc3402.project.sport.controller;
 
 import com.csc3402.project.sport.model.*;
+import com.csc3402.project.sport.repository.StudentRepository;
 import com.csc3402.project.sport.service.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -112,20 +113,56 @@ public class StudentController {
     }
 
     @GetMapping("/edit/{studentId}")
-    public String showEditForm(@PathVariable("studentId") String studentId, Model model) {
+    public String showEditForm(@PathVariable("studentId") String studentId,
+                               Model model,
+                               Principal principal) {
+
+        // Get email from logged-in user
+        String email = principal.getName();
+
+        // Find the logged-in student
+        Student currentStudent = studentService.findStudentByUsername(email);
+
+        // Block if logged-in student does not match the one being edited
+        if (currentStudent == null || !studentId.equals(currentStudent.getStudentId())) {
+            return "redirect:/access-denied";
+        }
+
         Optional<Student> optionalStudent = studentService.findStudentById(studentId);
         if (optionalStudent.isEmpty()) {
             return "redirect:/student/profile";
         }
+
         model.addAttribute("student", optionalStudent.get());
         return "student-edit";
     }
+
 
     @PostMapping("/edit/{studentId}")
     public String updateStudent(@PathVariable("studentId") String studentId,
                                 @ModelAttribute("student") @Valid Student student,
                                 BindingResult result,
-                                Model model) {
+                                Model model,
+                                Principal principal) {
+
+        // Get logged-in email
+        String email = principal.getName();
+
+        // Retrieve logged-in student by email
+        Student currentStudent = studentService.findStudentByUsername(email);
+
+        if (currentStudent == null) {
+            return "redirect:/login";
+        }
+
+        // Check if the logged-in student's ID matches the form student's ID
+        if (!studentId.equals(currentStudent.getStudentId())) {
+            return "redirect:/access-denied";  // Access block
+        }
+
+        // Prevent tampering: force-set the correct studentId on submitted object
+        student.setStudentId(currentStudent.getStudentId());
+
         if (result.hasErrors()) {
             return "student-edit";
         }
