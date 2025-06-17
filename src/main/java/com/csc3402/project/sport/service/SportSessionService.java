@@ -14,4 +14,6 @@ public interface SportSessionService {
     void deleteSession(SportSession session);
     List<SportSession> searchSessions(String query);
     List<SportSession> findByTeacher(Teacher teacher);
+    List<SportSession> findBySportName(String sportName);
+
 }

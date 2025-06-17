@@ -21,5 +21,6 @@ public interface SportSessionRepository extends JpaRepository<SportSession, Stri
     List<SportSession> findByTeacher_TeacherId(String teacherId);
     List<SportSession> findByTeacherEmail(String email);
     List<SportSession> findByTeacher(Teacher teacher);
+    List<SportSession> findBySport_SportNameIgnoreCase(String sportName);
 }
 

@@ -144,7 +144,7 @@ public class TeacherController {
         session.setTeacher(teacher);
         sportSessionService.addOrUpdateSession(session);
 
-        return "redirect:/teacher/register";
+        return "redirect:/teacher/home";
     }
 
     @GetMapping("/drop/{sessionId}")

@@ -50,5 +50,10 @@ public class SportSessionServiceImpl implements SportSessionService {
     public List<SportSession> searchSessions(String query) {
         return sportSessionRepository.searchBySportOrSessionId(query);
     }
+    @Override
+    public List<SportSession> findBySportName(String sportName) {
+        return sportSessionRepository.findBySport_SportNameIgnoreCase(sportName);
+    }
+
 
 }

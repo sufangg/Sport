@@ -32,6 +32,10 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private SportSessionRepository sportSessionRepository;
+    @Autowired
+    private SportRepository sportRepository;
 
     @GetMapping("/home")
     public String showAdminHome(Model model, Principal principal) {
@@ -75,24 +79,50 @@ public class AdminController {
                               @RequestParam String sessionGroup,
                               @RequestParam String venue,
                               @RequestParam String sessionTime,
-                              @RequestParam int quota) {
+                              @RequestParam int quota,
+                              Model model) {
 
-        // Find sport by name (avoid duplicate sports)
-        Sport sport = sportRepo.findBySportName(sportName);
+        // Find or create sport
+        Sport sport = sportRepository.findBySportName(sportName);
         if (sport == null) {
-            // Create new sport if not found
             sport = new Sport();
             sport.setSportId(generateSportId());
             sport.setSportName(sportName);
-            sportRepo.save(sport);
+            sportRepository.save(sport);
         }
 
-        // Generate session ID if not provided
+        // Check if this sport already has the group
+        List<SportSession> sessions = sportSessionRepository.findBySport_SportNameIgnoreCase(sportName);
+        boolean groupExists = sessions.stream()
+                .anyMatch(s -> s.getSessionGroup().equalsIgnoreCase(sessionGroup));
+
+        if (groupExists) {
+            // Suggest next group
+            int maxGroup = sessions.stream()
+                    .map(SportSession::getSessionGroup)
+                    .filter(g -> g.matches("G\\d+"))
+                    .map(g -> Integer.parseInt(g.substring(1)))
+                    .max(Integer::compareTo)
+                    .orElse(0);
+
+            String suggestedGroup = "G" + (maxGroup + 1);
+
+            model.addAttribute("error", "This group already exists for " + sportName + ".");
+            model.addAttribute("suggestedGroup", suggestedGroup);
+            model.addAttribute("sportName", sportName); // re-fill form
+            model.addAttribute("sessionGroup", sessionGroup);
+            model.addAttribute("venue", venue);
+            model.addAttribute("sessionTime", sessionTime);
+            model.addAttribute("quota", quota);
+            return "add-session"; // Return to the form with error
+        }
+
+        // Generate sessionId if not provided
         if (sessionId == null || sessionId.isEmpty()) {
             sessionId = generateSessionId();
         }
 
-        // Create session without assigning a teacher
+        // Create and save session
         SportSession session = new SportSession();
         session.setSessionId(sessionId);
         session.setSessionGroup(sessionGroup);
@@ -100,11 +130,12 @@ public class AdminController {
         session.setSessionTime(sessionTime);
         session.setQuota(quota);
         session.setSport(sport);
-        session.setTeacher(null); // no teacher assigned yet
+        session.setTeacher(null);
 
         sessionRepo.save(session);
         return "redirect:/admin/sessions";
     }
+
 
     private String generateSportId() {
         long count = sportRepo.count() + 1;
