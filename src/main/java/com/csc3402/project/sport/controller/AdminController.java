@@ -70,35 +70,29 @@ public class AdminController {
     }
 
     @PostMapping("/add-session")
-    public String saveSession(@RequestParam String sportId,
-                              @RequestParam String sportName,
-                              @RequestParam String sessionId,
+    public String saveSession(@RequestParam String sportName,
+                              @RequestParam(required = false) String sessionId,
                               @RequestParam String sessionGroup,
                               @RequestParam String venue,
                               @RequestParam String sessionTime,
-                              @RequestParam int quota,
-                              @RequestParam String teacherName) {
+                              @RequestParam int quota) {
 
-        // Try to find or create sport
-        Sport sport = sportRepo.findById(sportId).orElse(new Sport());
-        sport.setSportId(sportId);
-        sport.setSportName(sportName);
-        sportRepo.save(sport);
-
-        // Try to find or create teacher
-        Teacher teacher = teacherRepo.findByName(teacherName);
-        if (teacher == null) {
-            teacher = new Teacher();
-            teacher.setTeacherId("T" + System.currentTimeMillis());
-            teacher.setName(teacherName);
-            teacher.setEmail(teacherName.toLowerCase().replaceAll(" ", "") + "@school.edu");
-            teacher.setPassword("default123");
-            teacher.setPhoneNumber("0000000000");
-            teacher.setRoomNumber("Unknown");
-            teacherRepo.save(teacher);
+        // Find sport by name (avoid duplicate sports)
+        Sport sport = sportRepo.findBySportName(sportName);
+        if (sport == null) {
+            // Create new sport if not found
+            sport = new Sport();
+            sport.setSportId(generateSportId());
+            sport.setSportName(sportName);
+            sportRepo.save(sport);
         }
 
-        // Create new session
+        // Generate session ID if not provided
+        if (sessionId == null || sessionId.isEmpty()) {
+            sessionId = generateSessionId();
+        }
+
+        // Create session without assigning a teacher
         SportSession session = new SportSession();
         session.setSessionId(sessionId);
         session.setSessionGroup(sessionGroup);
@@ -106,9 +100,22 @@ public class AdminController {
         session.setSessionTime(sessionTime);
         session.setQuota(quota);
         session.setSport(sport);
-        session.setTeacher(teacher);
+        session.setTeacher(null); // no teacher assigned yet
 
         sessionRepo.save(session);
         return "redirect:/admin/sessions";
     }
+
+    private String generateSportId() {
+        long count = sportRepo.count() + 1;
+        return String.format("SP%02d", count); // e.g., SP01, SP02
+    }
+
+    private String generateSessionId() {
+        long count = sessionRepo.count() + 1;
+        return String.format("SS%03d", count); // e.g., SS001
+    }
+
+
+
 }

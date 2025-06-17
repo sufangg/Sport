@@ -68,14 +68,6 @@
 
   <form th:action="@{/admin/add-session}" method="post">
     <div class="form-group">
-      <label for="sportId">Sport Code (e.g: SP03)</label>
-      <input type="text" class="form-control" id="sportId" name="sportId" required>
-    </div>
-    <div class="form-group">
-      <label for="sessionId">Session Code (e.g: SS003)</label>
-      <input type="text" class="form-control" id="sessionId" name="sessionId" required>
-    </div>
-    <div class="form-group">
       <label for="sportName">Sport Name (e.g: Tennis)</label>
       <input type="text" class="form-control" id="sportName" name="sportName" required>
     </div>
@@ -95,11 +87,6 @@
       <label for="quota">Quota (e.g: 20)</label>
       <input type="number" class="form-control" id="quota" name="quota" required>
     </div>
-    <div class="form-group">
-      <label for="teacherName">Teacher Name (e.g: Mr. Nabil)</label>
-      <input type="text" class="form-control" id="teacherName" name="teacherName" required>
-    </div>
-
     <button type="submit" class="btn btn-success btn-block">
       <i class="fas fa-plus-circle"></i> Add Session
     </button>

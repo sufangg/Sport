@@ -123,7 +123,7 @@
                         <td th:text="${reg.sportSession.sessionTime}">Time</td>
                         <td th:text="${reg.sportSession.venue}">Venue</td>
                         <td th:text="${reg.sportSession.sessionGroup}">Group</td>
-                        <td th:text="${reg.sportSession.teacher.name}">Teacher</td>
+                        <td th:text="${reg.sportSession.teacher != null ? reg.sportSession.teacher.name : 'Not assigned yet'}"></td>
                         <td th:text="${reg.semester}">Semester</td>
                         <td th:text="${#dates.format(reg.registrationDate, 'dd-MM-yyyy')}">Date</td>
                         <td>
