@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/user-registration", "/css/**", "/js/**", "/logo.png").permitAll()
                         .requestMatchers("/access-denied", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/teacher-register", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

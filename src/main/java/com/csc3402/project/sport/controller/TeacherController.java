@@ -1,8 +1,6 @@
 package com.csc3402.project.sport.controller;
 
-import com.csc3402.project.sport.model.Registration;
-import com.csc3402.project.sport.model.SportSession;
-import com.csc3402.project.sport.model.Teacher;
+import com.csc3402.project.sport.model.*;
 import com.csc3402.project.sport.service.RegistrationService;
 import com.csc3402.project.sport.service.SportSessionService;
 import com.csc3402.project.sport.service.TeacherService;
@@ -12,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -105,4 +104,78 @@ public class TeacherController {
         model.addAttribute("message", "Account created successfully!");
         return "redirect:/LoginPage";
     }
+
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        List<SportSession> sessions = sportSessionService.listAllSessions();
+        model.addAttribute("sessions", sessions);
+        return "teacher-register";
+    }
+
+    @PostMapping("/register")
+    public String registerSession(@RequestParam("sessionId") String sessionId,
+                                  Principal principal,
+                                  Model model) {
+        String username = (principal != null) ? principal.getName() : "ali@example.com";
+
+        Teacher teacher = teacherService.findTeacherByUsername(username);
+        SportSession session = sportSessionService.findSessionById(sessionId).orElse(null);
+
+        List<SportSession> existingSessions = sportSessionService.findByTeacher(teacher);
+        if (!existingSessions.isEmpty()) {
+            model.addAttribute("error", "You are already registered to a session.");
+            model.addAttribute("sessions", sportSessionService.listAllSessions());
+            return "teacher-register";
+        }
+
+        if (session == null) {
+            model.addAttribute("error", "Session not found.");
+            model.addAttribute("sessions", sportSessionService.listAllSessions());
+            return "teacher-register";
+        }
+
+        if (session.getTeacher() != null) {
+            model.addAttribute("error", "This session already has a teacher assigned.");
+            model.addAttribute("sessions", sportSessionService.listAllSessions());
+            return "teacher-register";
+        }
+
+        session.setTeacher(teacher);
+        sportSessionService.addOrUpdateSession(session);
+
+        return "redirect:/teacher/register";
+    }
+
+    @GetMapping("/drop/{sessionId}")
+    public String unassignTeacher(@PathVariable("sessionId") String sessionId, Principal principal) {
+        String email = principal.getName();
+        Teacher teacher = teacherService.findTeacherByUsername(email);
+
+        SportSession session = sportSessionService.findSessionById(sessionId).orElse(null);
+
+        if (session != null && session.getTeacher() != null &&
+                session.getTeacher().getTeacherId().equals(teacher.getTeacherId())) {
+
+            session.setTeacher(null);
+            sportSessionService.addOrUpdateSession(session);
+        }
+
+        return "redirect:/teacher/home";
+    }
+
+
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String query, Model model) {
+        List<SportSession> sessions = sportSessionService.searchSessions(query);
+        if (sessions.isEmpty()) {
+            model.addAttribute("error", "No sport sessions found. Showing all sessions shortly...");
+            model.addAttribute("showAll", true); // signal for JS to fetch all later
+            return "teacher-register";
+        }
+        model.addAttribute("sessions", sessions);
+        return "teacher-register";
+    }
+
+
 }

@@ -66,6 +66,9 @@
                 <a class="nav-link font-weight-bold" th:href="@{/teacher/profile}">Profile</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link font-weight-bold" th:href="@{/teacher/register}">Register</a>
+            </li>
+            <li class="nav-item">
                 <form th:action="@{/logout}" method="post" style="display:inline;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <button type="submit" class="nav-link font-weight-bold btn btn-link" style="color: white; text-decoration: none;">Logout</button>
@@ -106,7 +109,8 @@
                         <th>Venue</th>
                         <th>Group</th>
                         <th>Quota</th>
-                        <th>Registered</th>
+                        <th>Registered Student</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody class="text-center">
@@ -123,7 +127,15 @@
                                class="btn btn-sm btn-success btn-view">
                                 View
                             </a>
+
                         </td>
+                        <td>
+                            <a th:href="@{'/teacher/drop/' + ${sportSession.sessionId}}"
+                               class="btn btn-sm btn-danger btn-drop">
+                                <i class="fas fa-trash-alt mr-1"></i> Unassign
+                            </a>
+                        </td>
+
                     </tr>
                     </tbody>
                 </table>
