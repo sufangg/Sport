@@ -43,7 +43,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .successHandler(successHandler) // ✅ redirect by role
+                        .successHandler(successHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout

@@ -33,13 +33,25 @@
     .table-hover tbody tr:hover {
       background-color: rgba(78, 115, 223, 0.05);
     }
+
+    .no-data {
+      padding: 1rem;
+      background-color: #ffcdcd;
+      border: 1px solid #ffbaba;
+      color: #000000;
+    }
+
+    .btn-back {
+      margin-top: 1rem;
+    }
+
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">MANAGE SPORT SESSIONS</a>
+  <a class="navbar-brand font-weight-bold" href="#">MANAGE SPORT SESSIONS</a>
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
@@ -65,22 +77,32 @@
 <div class="container my-5">
   <h3 class="mb-4">Students Registered for Session <span th:text="${sessionId}">SESSION_ID</span></h3>
 
-  <table class="table table-bordered table-hover">
-    <thead class="text-center">
-    <tr>
-      <th>Student ID</th>
-      <th>Name</th>
-      <th>Semester</th>
-    </tr>
-    </thead>
-    <tbody class="text-center">
-    <tr th:each="student : ${students}">
-      <td th:text="${student.studentId}">ID</td>
-      <td th:text="${student.name}">Name</td>
-      <td th:text="${student.semester}">Semester</td>
-    </tr>
-    </tbody>
-  </table>
+  <div th:if="${#lists.isEmpty(students)}" class="no-data">
+    <i class="fas fa-user-times fa-lg"></i> No students have registered for this session yet.
+  </div>
+
+  <div th:unless="${#lists.isEmpty(students)}" class="styled-table">
+    <table class="table table-bordered table-hover">
+     <thead class="text-center">
+      <tr>
+        <th>No.</th>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+     </thead>
+      <tbody class="text-center">
+        <tr th:each="student, stat : ${students}">
+        <td th:text="${stat.index + 1}">1</td>
+        <td th:text="${student.studentId}">ID</td>
+        <td th:text="${student.name}">Name</td>
+        <td th:text="${student.email}">Email</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a th:href="@{/admin/sessions}" class="btn btn-secondary mb-3 btn-back">Back to Dashboard</a>
 </div>
 
 </body>
