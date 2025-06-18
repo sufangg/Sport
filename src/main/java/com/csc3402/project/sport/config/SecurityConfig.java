@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/user-registration", "/css/**", "/js/**", "/logo.png").permitAll()
                         .requestMatchers("/access-denied", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/teacher-register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -55,7 +56,12 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access-denied")
                 )
-                .csrf(Customizer.withDefaults());
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")
+                )
+                .headers(headers -> headers
+                        .frameOptions().disable()
+                );
 
         return http.build();
     }

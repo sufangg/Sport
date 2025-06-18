@@ -2,16 +2,17 @@
 package com.csc3402.project.sport.controller;
 
 import com.csc3402.project.sport.model.*;
-import com.csc3402.project.sport.repository.RegistrationRepository;
-import com.csc3402.project.sport.repository.SportRepository;
-import com.csc3402.project.sport.repository.TeacherRepository;
-import com.csc3402.project.sport.repository.SportSessionRepository;
+import com.csc3402.project.sport.repository.*;
 import com.csc3402.project.sport.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -36,6 +37,10 @@ public class AdminController {
     private SportSessionRepository sportSessionRepository;
     @Autowired
     private SportRepository sportRepository;
+    @Autowired
+    private AdminRepository adminRepository;
+    @Autowired
+    private ModificationRepository modificationRepository;
 
     @GetMapping("/home")
     public String showAdminHome(Model model, Principal principal) {
@@ -84,11 +89,14 @@ public class AdminController {
 
         // Find or create sport
         Sport sport = sportRepository.findBySportName(sportName);
+        boolean isNewSport = false;
+
         if (sport == null) {
             sport = new Sport();
             sport.setSportId(generateSportId());
             sport.setSportName(sportName);
             sportRepository.save(sport);
+            isNewSport = true;
         }
 
         // Check if this sport already has the group
@@ -133,6 +141,22 @@ public class AdminController {
         session.setTeacher(null);
 
         sessionRepo.save(session);
+
+        if (isNewSport) {
+            Modification modification = new Modification();
+            modification.setModifyDate(LocalDate.now());
+            modification.setModifyTime(LocalTime.now());
+            modification.setSport(sport);
+
+            // Get logged-in admin (assumes adminId is the username)
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String adminId = auth.getName();
+            Admin admin = adminRepository.findByAdminId(adminId); // Ensure this method exists
+
+            modification.setAdmin(admin);
+            modificationRepository.save(modification);
+        }
+
         return "redirect:/admin/sessions";
     }
 

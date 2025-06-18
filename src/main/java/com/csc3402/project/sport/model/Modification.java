@@ -2,6 +2,8 @@ package com.csc3402.project.sport.model;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -11,10 +13,10 @@ public class Modification {
     private int id;
 
     @Column(name = "Modify_Date")
-    private Date modifyDate;
+    private LocalDate modifyDate;
 
     @Column(name = "Modify_Time")
-    private Timestamp modifyTime;
+    private LocalTime modifyTime;
 
     @ManyToOne
     private Admin admin;
@@ -24,7 +26,7 @@ public class Modification {
 
     public Modification() {}
 
-    public Modification(Date modifyDate, Timestamp modifyTime, Admin admin, Sport sport) {
+    public Modification(LocalDate modifyDate, LocalTime modifyTime, Admin admin, Sport sport) {
         this.modifyDate = modifyDate;
         this.modifyTime = modifyTime;
         this.admin = admin;
@@ -39,19 +41,19 @@ public class Modification {
         this.id = id;
     }
 
-    public Date getModifyDate() {
+    public LocalDate getModifyDate() {
         return modifyDate;
     }
 
-    public void setModifyDate(Date modifyDate) {
+    public void setModifyDate(LocalDate modifyDate) {
         this.modifyDate = modifyDate;
     }
 
-    public Timestamp getModifyTime() {
+    public LocalTime getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Timestamp modifyTime) {
+    public void setModifyTime(LocalTime modifyTime) {
         this.modifyTime = modifyTime;
     }
 
