@@ -55,7 +55,7 @@ public class AuthController {
             student.setName(dto.getName());
             student.setEmail(dto.getEmail());
             student.setPassword(dto.getPassword());
-            student.setPhoneNumber(dto.getPhoneNumber());
+            student.setPhoneNumber(dto.getPhoneNumber().replace(",", "").trim());
             student.setSemester(dto.getSemester());
             student.setAddress(dto.getAddress());
             studentRepo.save(student);
@@ -65,10 +65,11 @@ public class AuthController {
             teacher.setName(dto.getName());
             teacher.setEmail(dto.getEmail());
             teacher.setPassword(dto.getPassword());
-            teacher.setPhoneNumber(dto.getPhoneNumber());
+            teacher.setPhoneNumber(dto.getPhoneNumber().replace(",", "").trim());
             teacher.setRoomNumber(dto.getRoomNumber());
             teacherRepo.save(teacher);
         }
+
 
         redirectAttributes.addAttribute("success", "true");
         return "redirect:/login";
