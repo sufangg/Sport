@@ -4,14 +4,17 @@ import com.csc3402.project.sport.model.*;
 import com.csc3402.project.sport.service.RegistrationService;
 import com.csc3402.project.sport.service.SportSessionService;
 import com.csc3402.project.sport.service.TeacherService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/teacher")
@@ -73,22 +76,56 @@ public class TeacherController {
 
     // Show edit form
     @GetMapping("/edit/{teacherId}")
-    public String showEditForm(@PathVariable("teacherId") String teacherId, Model model) {
-        Teacher teacher = teacherService.findTeacherById(teacherId).orElse(null);
-        if (teacher == null) {
+    public String showEditForm(@PathVariable("teacherId") String teacherId,
+                               Model model,
+                               Principal principal) {
+
+        String username = principal.getName();
+        Teacher currentTeacher = teacherService.findTeacherByUsername(username);
+
+        // Block access if teacher not logged in or trying to edit someone else
+        if (currentTeacher == null || !teacherId.equals(currentTeacher.getTeacherId())) {
+            return "redirect:/access-denied";
+        }
+
+        Optional<Teacher> optionalTeacher = teacherService.findTeacherById(teacherId);
+        if (optionalTeacher.isEmpty()) {
             return "redirect:/teacher/profile";
         }
-        model.addAttribute("teacher", teacher);
+
+        model.addAttribute("teacher", optionalTeacher.get());
         return "teacher-edit";
     }
 
     // Handle edit form submission
     @PostMapping("/edit/{teacherId}")
     public String updateTeacher(@PathVariable("teacherId") String teacherId,
-                                @ModelAttribute("teacher") Teacher updatedTeacher) {
-        teacherService.updateTeacher(teacherId, updatedTeacher);
+                                @ModelAttribute("teacher") @Valid Teacher teacher,
+                                BindingResult result,
+                                Model model,
+                                Principal principal) {
+
+        String username = principal.getName();
+        Teacher currentTeacher = teacherService.findTeacherByUsername(username);
+
+        if (currentTeacher == null) {
+            return "redirect:/login";
+        }
+
+        // Block if trying to edit another teacher's profile
+        if (!teacherId.equals(currentTeacher.getTeacherId())) {
+            return "redirect:/access-denied";
+        }
+
+        teacher.setTeacherId(currentTeacher.getTeacherId());
+        if (result.hasErrors()) {
+            return "teacher-edit";
+        }
+        teacherService.updateTeacher(teacherId, teacher);
+
         return "redirect:/teacher/profile";
     }
+
 
     // Show register account form
     @GetMapping("/account")

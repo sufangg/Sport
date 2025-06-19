@@ -39,6 +39,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         existing.setName(teacher.getName());
         existing.setEmail(teacher.getEmail());
+        existing.setRoomNumber(teacher.getRoomNumber());
         existing.setPhoneNumber(teacher.getPhoneNumber());
 
         if (teacher.getPassword() != null && !teacher.getPassword().isBlank()) {

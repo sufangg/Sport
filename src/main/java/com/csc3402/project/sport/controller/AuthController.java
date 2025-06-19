@@ -5,11 +5,14 @@ import com.csc3402.project.sport.model.Student;
 import com.csc3402.project.sport.model.Teacher;
 import com.csc3402.project.sport.repository.StudentRepository;
 import com.csc3402.project.sport.repository.TeacherRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -91,8 +94,25 @@ public class AuthController {
     }
 
     @GetMapping("/access-denied")
-    public String accessDenied() {
+    public String accessDeniedRedirect(Principal principal, Model model) {
+        if (principal != null) {
+            // Get roles
+            Authentication auth = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+            boolean isStudent = auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
+            boolean isTeacher = auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
+
+            if (isStudent) {
+                model.addAttribute("homeLink", "/student/home");
+            } else if (isTeacher) {
+                model.addAttribute("homeLink", "/teacher/home");
+            } else {
+                model.addAttribute("homeLink", "/");
+            }
+        }
         return "access-denied";
     }
+
 
 }
