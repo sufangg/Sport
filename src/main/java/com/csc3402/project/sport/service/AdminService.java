@@ -10,4 +10,5 @@ public interface AdminService {
     void addNewSession(SportSession session);
 
     Admin findAdminByName(String name);
+    Admin findByAdminId(String adminId);
 }

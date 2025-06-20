@@ -102,13 +102,15 @@ public class AuthController {
                     .anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
             boolean isTeacher = auth.getAuthorities().stream()
                     .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
+            boolean isAdmin = auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
             if (isStudent) {
                 model.addAttribute("homeLink", "/student/home");
             } else if (isTeacher) {
                 model.addAttribute("homeLink", "/teacher/home");
-            } else {
-                model.addAttribute("homeLink", "/");
+            } else if (isAdmin){
+                model.addAttribute("homeLink", "/admin/home");
             }
         }
         return "access-denied";

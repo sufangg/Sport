@@ -12,7 +12,8 @@ VALUES('T001', 'Mr. Lim', 'lim@school.edu', 'B-204', '0199990001', 'teach123'),
 -- Admins
 INSERT INTO admin (admin_id, name, password)
 VALUES
-    ('A001', 'admin1', 'adminpass');
+    ('A001', 'admin1', 'admin123'),
+    ('A002', 'admin2', 'admin456');
 
 -- Sports
 INSERT INTO sport (sport_id, sport_name)

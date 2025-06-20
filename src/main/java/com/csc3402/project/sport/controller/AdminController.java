@@ -43,12 +43,20 @@ public class AdminController {
     private ModificationRepository modificationRepository;
 
     @GetMapping("/home")
-    public String showAdminHome(Model model, Principal principal) {
-        String name = (principal != null) ? principal.getName() : "admin1";
-        Admin admin = adminService.findAdminByName(name);
-        model.addAttribute("admin", admin);
-        return "admin-home";
+    public String adminHome(Model model, Principal principal) {
+        String adminId = (principal != null) ? principal.getName() : "admin1"; // default fallback
+
+        Admin admin = adminService.findByAdminId(adminId); // find by ID
+
+        if (admin == null) {
+            model.addAttribute("adminName", "Admin");
+        } else {
+            model.addAttribute("admin", admin); // send full admin object
+        }
+
+        return "admin-home"; // Thymeleaf page
     }
+
 
     @GetMapping("/sessions")
     public String viewSessions(Model model) {
@@ -63,7 +71,7 @@ public class AdminController {
 
         List<Student> studentList = registrations.stream()
                 .map(Registration::getStudent)
-                .toList(); // Or use .collect(Collectors.toList()); if you're using Java 8-16
+                .toList();
 
         model.addAttribute("students", studentList);
         model.addAttribute("sessionId", sessionId);
